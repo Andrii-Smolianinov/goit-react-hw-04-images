@@ -1,33 +1,38 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 import { Overlay, Modal } from 'components/Modal/StylesModal';
 
 const modalRoot = document.getElementById('modal-root');
 
-export default class GalleryModal extends Component {
-  componentDidMount() {
-    document.addEventListener('keydown', this.closeModal);
-  }
+const GalleryModal = ({ largeImageURL, onClose }) => {
+  useEffect(() => {
+    const handleKey = event => (event.code === 'Escape') & onClose();
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('keydown', handleKey);
+    };
+  }, []);
 
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.closeModal);
-  }
-
-  closeModal = ({ target, currentTarget, code }) => {
-    if (target === currentTarget || code === 'Escape') {
-      this.props.onClose();
+  const closeModal = event => {
+    if (event.currentTarget === event.target) {
+      onClose();
     }
   };
 
-  render() {
-    const { closeModal } = this;
-    return createPortal(
-      <Overlay onClick={closeModal}>
-        <Modal>
-          <img src={this.props.largeImageURL} alt="" />
-        </Modal>
-      </Overlay>,
-      modalRoot
-    );
-  }
-}
+  return createPortal(
+    <Overlay onClick={closeModal}>
+      <Modal>
+        <img src={largeImageURL} alt="" />
+      </Modal>
+    </Overlay>,
+    modalRoot
+  );
+};
+
+export default GalleryModal;
+
+GalleryModal.propTypes = {
+  onClose: PropTypes.func,
+  largeImageURL: PropTypes.string,
+};
