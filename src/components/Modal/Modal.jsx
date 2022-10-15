@@ -6,13 +6,14 @@ import { Overlay, Modal } from 'components/Modal/StylesModal';
 const modalRoot = document.getElementById('modal-root');
 
 const GalleryModal = ({ largeImageURL, onClose }) => {
+  
   useEffect(() => {
     const handleKey = event => (event.code === 'Escape') & onClose();
     document.addEventListener('keydown', handleKey);
     return () => {
       document.removeEventListener('keydown', handleKey);
     };
-  }, []);
+  });
 
   const closeModal = event => {
     if (event.currentTarget === event.target) {
