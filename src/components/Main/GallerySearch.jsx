@@ -1,3 +1,83 @@
+// import React from 'react';
+// import { useState, useEffect } from 'react';
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+// import Searchbar from 'components/Searchbar/Searchbar';
+// import ImageGallery from 'components/ImageGallery/ImageGallery';
+// import GalleryModal from 'components/Modal/Modal';
+// import { searchPosts } from 'components/API/API';
+// import { Loader } from 'components/Loader/Loader';
+// import { Button } from 'components/Button/Button';
+
+// const GallerySearch = () => {
+//   const [page, setPage] = useState(1);
+//   const [query, setQuery] = useState('');
+//   const [items, setItems] = useState([]);
+//   const [largeImageURL, setLargeImageURL] = useState('');
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [error, setError] = useState(null);
+//   const [totalPages, setTotalPages] = useState(0);
+
+//   useEffect(() => {
+//     if (!query) {
+//       return;
+//     }
+
+//     const loadImages = async (query, page) => {
+//       setIsLoading(true);
+
+//       try {
+//         const data = await searchPosts(query, page);
+//         console.log('data', data);
+
+//         setItems(prevState => [...prevState, ...data.hits]);
+//         setTotalPages(data.totalHits);
+//       } catch (error) {
+//         setError({ error });
+//       } finally {
+//         setIsLoading(false);
+//       }
+//     };
+
+//     loadImages(query, page);
+//   }, [query, page]);
+
+//   const handleSearchSubmit = query => {
+//     setQuery(query);
+//     setItems([]);
+//     setPage(1);
+//     setTotalPages(0);
+//   };
+
+//   const onLoadMore = () => {
+//     setPage(prevState => prevState + 1);
+//   };
+
+//   const onOpenModal = largeImageURL => {
+//     setLargeImageURL(largeImageURL);
+//   };
+
+//   const onCloseModal = () => {
+//     setLargeImageURL('');
+//   };
+//   const isPosts = Boolean(items.length);
+//   return (
+//     <>
+//       {largeImageURL && (
+//         <GalleryModal onClose={onCloseModal} largeImageURL={largeImageURL} />
+//       )}
+//       <Searchbar onSubmit={handleSearchSubmit} />
+//       {isLoading && <Loader />}
+//       {error && toast.error('🥴🥴🥴 Error!', { theme: 'colored' })}
+//       {isPosts && <ImageGallery items={items} onClick={onOpenModal} />}
+//       {page < Math.ceil(totalPages / 15) && <Button loadMore={onLoadMore} />}
+//       <ToastContainer position="top-right" autoClose={2000} pauseOnHover />
+//     </>
+//   );
+// };
+
+// export default GallerySearch;
+
 import React, { Component } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

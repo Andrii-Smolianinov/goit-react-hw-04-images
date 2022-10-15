@@ -1,6 +1,7 @@
-import { Component } from 'react';
-import { ImSearch } from 'react-icons/im';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
+import { ImSearch } from 'react-icons/im';
 import {
   HeaderSearchbar,
   SearchForm,
@@ -9,49 +10,44 @@ import {
   SearchFormInput,
 } from 'components/Searchbar/StylesSearchbar';
 
-export default class Searchbar extends Component {
-  state = {
-    searchQuery: '',
+export default function Searchbar({ onSubmit }) {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleInputChange = event => {
+    setSearchQuery(event.target.value.toLowerCase());
   };
 
-  handleInputChange = event => {
-    this.setState({ searchQuery: event.target.value.toLowerCase() });
-  };
-
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
 
-    if (this.state.searchQuery.trim() === '') {
+    if (searchQuery.trim() === '') {
       toast.warn('🥴🥴🥴 введіть запит!', { theme: 'colored' });
       return;
     }
-    const { onSubmit } = this.props;
-    onSubmit({ ...this.state });
-    //onSubmit - пропс у якому передається у <Searchbar onSubmit={onSearch} з PostSearch. звязує state з PostSearch.
-    this.setState({ searchQuery: '' });
+
+    setSearchQuery('');
   };
 
-  render() {
-    const { searchQuery } = this.state;
-    const { handleSubmit, handleInputChange } = this;
-    return (
-      <HeaderSearchbar>
-        <SearchForm onSubmit={handleSubmit}>
-          <SearchFormButton type="submit" onClick={handleSubmit}>
-            <ImSearch style={{ marginRight: 8 }} />
-            <SearchFormButtonLabel></SearchFormButtonLabel>
-          </SearchFormButton>
-          <SearchFormInput
-            className="input"
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            onChange={handleInputChange}
-            value={searchQuery}
-          />
-        </SearchForm>
-      </HeaderSearchbar>
-    );
-  }
+  return (
+    <HeaderSearchbar>
+      <SearchForm onSubmit={handleSubmit}>
+        <SearchFormButton type="submit">
+          <ImSearch style={{ marginRight: 8 }} />
+          <SearchFormButtonLabel>Search</SearchFormButtonLabel>
+        </SearchFormButton>
+        <SearchFormInput
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          onChange={handleInputChange}
+          value={searchQuery}
+        />
+      </SearchForm>
+    </HeaderSearchbar>
+  );
 }
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func,
+};
