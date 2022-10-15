@@ -14,7 +14,7 @@ export default function Searchbar({ onSubmit }) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleInputChange = event => {
-    setSearchQuery(event.target.value.toLowerCase());
+    setSearchQuery(event.currentTarget.value.toLowerCase());
   };
 
   const handleSubmit = event => {
@@ -24,16 +24,17 @@ export default function Searchbar({ onSubmit }) {
       toast.warn('🥴🥴🥴 введіть запит!', { theme: 'colored' });
       return;
     }
-
+    onSubmit(searchQuery);    
     setSearchQuery('');
   };
+  
 
   return (
     <HeaderSearchbar>
       <SearchForm onSubmit={handleSubmit}>
-        <SearchFormButton type="submit">
+        <SearchFormButton type="submit"  onClick={handleSubmit}>
           <ImSearch style={{ marginRight: 8 }} />
-          <SearchFormButtonLabel>Search</SearchFormButtonLabel>
+          <SearchFormButtonLabel></SearchFormButtonLabel>
         </SearchFormButton>
         <SearchFormInput
           type="text"
